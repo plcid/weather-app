@@ -11,8 +11,9 @@ import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import Grid from '@mui/material/Grid2';
 import { Typography } from '@mui/material';
-import { Air, AppSettingsAlt, CalendarToday, Compress, Description, EventRepeat, IosShare, Notifications, NotificationsActive, NotificationsNone, Opacity, Reply, Share, Thermostat, Today, Update, WbCloudy } from '@mui/icons-material';
+import { Air, AppSettingsAlt, CalendarToday, Compress, Description, EventRepeat, IosShare, Notifications, NotificationsActive, NotificationsNone, Opacity, Reply, Share, Thermostat, Today, Update, Warning, WbCloudy } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { event_types, future_events, past_events } from '../const';
 
 const NAVIGATION = [
   {
@@ -63,18 +64,7 @@ const NAVIGATION = [
     segment: 'pastalerts',
     title: 'Past Alerts',
     icon: <NotificationsNone />,
-    children: [
-      {
-        segment: 'sales',
-        title: 'Sales',
-        icon: <DescriptionIcon />,
-      },
-      {
-        segment: 'traffic',
-        title: 'Traffic',
-        icon: <DescriptionIcon />,
-      },
-    ],
+    children: [{}]
   },
   {
     segment: 'activealerts',
@@ -104,17 +94,21 @@ const NAVIGATION = [
     segment: 'pastevents',
     title: 'Past Events',
     icon: <EventRepeat />,
-    children: [
-        {}
-    ],
+    children: past_events.map((event, idx) => ({
+      segment: `${idx}`,
+      title: `${event_types[event.eventType].replaceAll('_', ' ')} on ${event.startDate.toLocaleDateString()}`,
+      icon: <Warning />
+    })),
   },
   {
-    segment: 'eventstoday',
-    title: `Today's Events`,
+    segment: 'futureevents',
+    title: `Future Events`,
     icon: <Today />,
-    children: [
-        {}
-    ],
+    children: future_events.map((event, idx) => ({
+      segment: `${idx}`,
+      title: `${event_types[event.eventType].replaceAll('_', ' ')} on ${event.startDate.toLocaleDateString()}`,
+      icon: <Warning />
+    })),
   },
   {
     kind: 'divider',
@@ -168,7 +162,10 @@ function useDemoRouter(initialPath) {
     return {
       pathname,
       searchParams: new URLSearchParams(),
-      navigate,
+      navigate: (path) => {
+        setPathname(path);
+        navigate(path)
+      }
     };
   }, [pathname]);
 
@@ -189,6 +186,7 @@ export default function Wrapper({Content}) {
       }}
     >
       <DashboardLayout
+        
       >
         <PageContainer
           breadcrumbs={[' ']}
