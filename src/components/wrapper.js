@@ -11,9 +11,9 @@ import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import Grid from '@mui/material/Grid2';
 import { Typography } from '@mui/material';
-import { Air, AppSettingsAlt, CalendarToday, Compress, Description, EventRepeat, IosShare, Notifications, NotificationsActive, NotificationsNone, Opacity, Reply, Share, Thermostat, Today, Update, Warning, WbCloudy } from '@mui/icons-material';
+import { Air, AppSettingsAlt, CalendarToday, Check, Close, Compress, Description, EventRepeat, IosShare, Notifications, NotificationsActive, NotificationsNone, Opacity, Reply, Share, Thermostat, Today, Update, Warning, WbCloudy } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { event_types, future_events, past_events } from '../const';
+import { active_alerts, event_types, future_events, past_alerts, past_events } from '../const';
 
 const NAVIGATION = [
   {
@@ -21,7 +21,7 @@ const NAVIGATION = [
     title: 'Dashboard',
   },
   {
-    segment: 'dashboard',
+    segment: '',
     title: 'Dashboard',
     icon: <PreviewIcon />,
   },
@@ -64,24 +64,21 @@ const NAVIGATION = [
     segment: 'pastalerts',
     title: 'Past Alerts',
     icon: <NotificationsNone />,
-    children: [{}]
+    children: past_alerts.map((alert, idx) => ({
+      segment: `${idx}`,
+      title: `${event_types[alert.eventType].replaceAll('_', ' ')} near you!`,
+      icon: <Warning />
+    })),
   },
   {
     segment: 'activealerts',
     title: 'Active Alerts',
     icon: <NotificationsActive />,
-    children: [
-      {
-        segment: 'sales',
-        title: 'Sales',
-        icon: <DescriptionIcon />,
-      },
-      {
-        segment: 'traffic',
-        title: 'Traffic',
-        icon: <DescriptionIcon />,
-      },
-    ],
+    children:active_alerts.map((alert, idx) => ({
+      segment: `${idx}`,
+      title: `${alert.title}`,
+      icon: alert.active ? <Check /> : <Close />
+    })),
   },
   {
     kind: 'divider',
@@ -173,7 +170,7 @@ function useDemoRouter(initialPath) {
 }
 
 export default function Wrapper({Content}) {
-  const router = useDemoRouter('/dashboard');
+  const router = useDemoRouter('/');
 
   return (
     <AppProvider

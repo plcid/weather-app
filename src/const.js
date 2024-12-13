@@ -40,8 +40,6 @@ export const user = {
         }
     },
     notifications: [], // All received notifications, wait how are these different from alerts? Maybe notifications are specific to user and alerts are global?
-    alerts: [], // All received alerts
-    events: [], // All events, differentiate between past & current by date, put in different areas of UI
 }
 
 export const event_types = [
@@ -109,5 +107,42 @@ export const future_events = [
             lng: -115.7212,
         },
         radius: 20, // in miles
+    }
+]
+
+export const past_alerts = [
+    {
+        eventType: event_types.indexOf('Ice_Storm'),
+        severity: .8,
+        startDate: new Date('2/2/2023'),
+        endDate: new Date('2/2/2023'),
+        coordinates: {
+            lat: 42.5802641,
+            lng: -83.2205315,
+        },
+        radius: 40,
+    }
+]
+
+export let active_alerts = [
+    {
+        title:'Bad Weather Near You',
+        active: true,
+        description: 'alerts about bad weather happening near your current location'
+    },
+    {
+        title: 'Educational Resources',
+        active:true,
+        description: 'notifications when new educational resources are released, which include info on how to prepare for an upcoming weather event'
+    },
+    {
+        title:'Weather Community News',
+        active:true,
+        description: 'newsletters forwarded to your Email when The Weather Company weather community releases new content'
+    },
+    {
+        title:'Upcoming Weather Events',
+        active:true,
+        description: 'event notifications when unusual or dangerous weather conditions occur, around or outside of your area'
     }
 ]
