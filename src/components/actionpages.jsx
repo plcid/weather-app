@@ -145,99 +145,108 @@ const UpdateStatusPage = () => {
 
 // Simple Generate Report Page
 const GenerateReportPage = () => {
-  const [options, setOptions] = useState({
-    temperature: true,
-    humidity: true
-  });
-  const [generating, setGenerating] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: ''
-  });
-
-  const handleOptionChange = (option) => (event) => {
-    const newValue = event.target.checked;
-    setOptions(prev => ({
-      ...prev,
-      [option]: newValue
-    }));
-    setSnackbar({
-      open: true,
-      message: `${option.charAt(0).toUpperCase() + option.slice(1)} data ${newValue ? 'included' : 'excluded'}`
+    const [options, setOptions] = useState({
+      temperature: true,
+      humidity: true
     });
-  };
-
-  const handleGenerate = () => {
-    setGenerating(true);
-    setSnackbar({
-      open: true,
-      message: 'Generating report...'
+    const [generating, setGenerating] = useState(false);
+    const [snackbar, setSnackbar] = useState({
+      open: false,
+      message: ''
     });
-
-    // Simulate report generation
-    setTimeout(() => {
-      setGenerating(false);
+  
+    const handleOptionChange = (option) => (event) => {
+      const newValue = event.target.checked;
+      setOptions(prev => ({
+        ...prev,
+        [option]: newValue
+      }));
       setSnackbar({
         open: true,
-        message: 'Report generated successfully'
+        message: `${option.charAt(0).toUpperCase() + option.slice(1)} data ${newValue ? 'included' : 'excluded'}`
       });
-    }, 3000);
+    };
+  
+    const handleGenerate = () => {
+      setGenerating(true);
+      setSnackbar({
+        open: true,
+        message: 'Generating report...'
+      });
+  
+      // Simulate report generation delay
+      setTimeout(() => {
+        // Create a link to download the PDF
+        const link = document.createElement('a');
+        link.href = './report.pdf';
+        link.download = `weather-report-${new Date().toISOString().split('T')[0]}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+  
+        setGenerating(false);
+        setSnackbar({
+          open: true,
+          message: 'Report downloaded successfully'
+        });
+      }, 3000);
+    };
+  
+    return (
+      <Box sx={{ p: 3 }}>
+        <Typography variant="h4" gutterBottom>
+          <Description sx={{ mr: 1, verticalAlign: 'middle' }} />
+          Generate Report
+        </Typography>
+        
+        <Card>
+          <CardContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <FormControlLabel 
+                  control={
+                    <Switch 
+                      checked={options.temperature} 
+                      onChange={handleOptionChange('temperature')}
+                    />
+                  }
+                  label="Include Temperature Data"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel 
+                  control={
+                    <Switch 
+                      checked={options.humidity} 
+                      onChange={handleOptionChange('humidity')}
+                    />
+                  }
+                  label="Include Humidity Data"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button 
+                  variant="contained"
+                  onClick={handleGenerate}
+                  disabled={generating}
+                  startIcon={<Description />}
+                >
+                  {generating ? 'Generating Report...' : 'Generate & Download Report'}
+                </Button>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
+  
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={3000}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          message={snackbar.message}
+        />
+      </Box>
+    );
   };
-
-  return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        <Description sx={{ mr: 1, verticalAlign: 'middle' }} />
-        Generate Report
-      </Typography>
-      
-      <Card>
-        <CardContent>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <FormControlLabel 
-                control={
-                  <Switch 
-                    checked={options.temperature} 
-                    onChange={handleOptionChange('temperature')}
-                  />
-                }
-                label="Include Temperature Data"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel 
-                control={
-                  <Switch 
-                    checked={options.humidity} 
-                    onChange={handleOptionChange('humidity')}
-                  />
-                }
-                label="Include Humidity Data"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button 
-                variant="contained"
-                onClick={handleGenerate}
-                disabled={generating}
-              >
-                {generating ? 'Generating...' : 'Generate Report'}
-              </Button>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
-
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        message={snackbar.message}
-      />
-    </Box>
-  );
-};
 
 // Simple Share Page
 const ShareWeatherDataPage = () => {
