@@ -137,7 +137,7 @@ export let active_alerts = [
     },
     {
         title:'Weather Community News',
-        active:true,
+        active:false,
         description: 'newsletters forwarded to your Email when The Weather Company weather community releases new content'
     },
     {
@@ -146,3 +146,24 @@ export let active_alerts = [
         description: 'event notifications when unusual or dangerous weather conditions occur, around or outside of your area'
     }
 ]
+
+export const wind_speeds = [
+    8, 7, 7, 6, 6, 6, 7, 8, 10, 12, 13, 14,
+    14, 15, 15, 15, 14, 13, 12, 11, 10, 9, 8, 8
+];
+
+export const humidity = [
+    85, 84, 83, 82, 80, 78, 76, 74, 72, 70, 68, 65, // Morning: Gradual decrease as temperatures rise
+    63, 61, 60, 62, 64, 68, 72, 75, 78, 80, 83, 85 // Afternoon to night: Humidity rises as temperatures drop
+];
+
+export const pressure = [
+    14.72, 14.72, 14.71, 14.71, 14.70, 14.70, 14.70, 14.71, 
+    14.72, 14.73, 14.74, 14.75, 14.75, 14.74, 14.73, 14.73, 
+    14.72, 14.71, 14.71, 14.70, 14.70, 14.71, 14.71, 14.72
+]
+
+export const temperature = [
+    22, 21, 20, 19, 18, 18, 19, 21, 25, 28, 30, 32, // Morning: Gradual warming
+    33, 32, 30, 28, 27, 26, 24, 23, 22, 21, 21, 20 // Afternoon to night: Cooling as sun sets
+  ];
